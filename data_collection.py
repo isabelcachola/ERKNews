@@ -39,8 +39,9 @@ def main():
 
             # Checks month then date
             elif (date_collect[0] == date[1]) and (date_collect[1] == date[2]):
-                #j = json.dumps(tweet)
-                #output.write(j)
+                if 'http' in tweet['text']:
+                    idx = tweet['text'].index('http')
+                    tweet['text'] = tweet['text'][:idx]
                 output.write(tweet['text'] + '\n')
                 print('@%s tweeted: %s' %(tweet['user']['screen_name'], tweet['text']))
 
