@@ -11,6 +11,7 @@ def main():
     handle = input('Enter handle to collect (@AP): ')
     date_collect_orig = input("Enter date to collect (Mar 18 2017): ")
     date_collect = date_collect_orig.split()
+    print()
 
     # Hard code months
     months = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
@@ -36,12 +37,16 @@ def main():
 
             if 'RT' in tweet['text']:
                 pass
+            elif len(tweet['text'].split()) < 4:
+                pass
 
             # Checks month then date
             elif (date_collect[0] == date[1]) and (date_collect[1] == date[2]):
                 if 'http' in tweet['text']:
                     idx = tweet['text'].index('http')
                     tweet['text'] = tweet['text'][:idx]
+                if '\n' in tweet['text']:
+                    tweet['text'] = tweet['text'].replace('\n','')
                 output.write(tweet['text'] + '\n')
                 print('@%s tweeted: %s' %(tweet['user']['screen_name'], tweet['text']))
 
