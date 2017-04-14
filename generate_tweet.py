@@ -30,9 +30,6 @@ def bigram_probs(corpus):
 
     return prob
 
-#########
-# Problem 5a:
-
 # Helper function that creates probability partion
 def make_partition(word1):
     tot = 0
@@ -61,7 +58,7 @@ def generate_words(prob):
     count = 0
     # Generates next 48 words
     prev_word = sent[-1]
-    while count < 8:
+    while prev_word != '</s>':
         next_prob = r.random()
         idx = 0
         next_words, next_partition = make_partition(prob[prev_word])
@@ -91,10 +88,15 @@ def main():
     reader = csv.reader(test_file)
     for row in reader:
         #print(row)
-        st += '<s>' + ' ' +  row[0] + ' ' + '<\s>' + ' '
-    #print(st)
-    test_probs = bigram_probs(st)
-    test_sent = generate_words(test_probs)
+        st += '<s>' + ' ' +  row[0] + ' ' + '</s>' + ' '
+
+    over140 = True
+    while over140:
+        test_probs = bigram_probs(st)
+        test_sent = generate_words(test_probs)
+        if len(test_sent) < 141:
+            over140 = False
+
     print(test_sent)
 
     '''
