@@ -1,3 +1,11 @@
+##############################################
+'''
+This code generates and returns a tweet based on files in output folder without
+start and stop characters
+'''
+##############################################
+
+
 import nltk
 import pprint
 import random as r
@@ -87,17 +95,17 @@ def generate_words(prob):
 
 
 
-def main():
+def generate():
 
     # Checks if tweet generated is under 140 characters and regenerates if over
     over140 = True
     while over140:
-        test_probs = bigram_probs()
-        test_sent = generate_words(test_probs)
-        if len(test_sent) < 141:
+        probs = bigram_probs()
+        sent = generate_words(probs)
+        if len(sent) < 141:
             over140 = False
+    return sent[4:len(sent)-5]
+    #print(test_sent)
 
-    print(test_sent)
 
-main()
 

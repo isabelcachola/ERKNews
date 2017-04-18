@@ -1,3 +1,9 @@
+################################
+'''
+Converts output.txt to a csv file that is stored in the output directory
+'''
+################################
+
 import csv
 import itertools
 import sys

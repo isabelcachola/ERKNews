@@ -1,3 +1,11 @@
+#####################################
+'''
+This code takes twitter handles and dates as input and outputs a text file
+(output.txt) which must then be converted to csv using data2spreadsheet.py
+Retweets and links are excluded.
+'''
+#####################################
+
 from TwitterSearch import *
 from auth import TwitterAuth
 import json
