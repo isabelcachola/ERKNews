@@ -3,20 +3,32 @@ import pprint
 import random as r
 
 # Creates bigram dictionary
-def bigram_probs(corpus):
+def bigram_probs():
     count = {}
+    from os import listdir
+    from os.path import isfile, join
+    import csv
 
-    words = corpus.split()
+    files = [f for f in listdir('./output')]
+    for f in files:
+        st = ''
+        test_file = open('./output/' + f, 'r')
+        reader = csv.reader(test_file)
+        for row in reader:
+            #print(row)
+            st += '<s>' + ' ' +  row[0] + ' ' + '</s>' + ' '
 
-    # Creates dictionary that maps each word to a dictionary that maps a
-    # second word to count
-    for word1, word2 in nltk.bigrams(words):
-        if word1 not in count:
-            count[word1] = {}
-        if word2 not in count[word1]:
-            count[word1][word2] = 1
-        else:
-            count[word1][word2] += 1
+        words = st.split()
+
+        # Creates dictionary that maps each word to a dictionary that maps a
+        # second word to count
+        for word1, word2 in nltk.bigrams(words):
+            if word1 not in count:
+                count[word1] = {}
+            if word2 not in count[word1]:
+                count[word1][word2] = 1
+            else:
+                count[word1][word2] += 1
 
     prob = {}
 
@@ -77,42 +89,15 @@ def generate_words(prob):
 
 def main():
 
-    from os import listdir
-    from os.path import isfile, join
-    import csv
-
-    files = [f for f in listdir('./output')]
-    st = ''
-    test_file = files[0]
-    test_file = open('./output/' + test_file, 'r')
-    reader = csv.reader(test_file)
-    for row in reader:
-        #print(row)
-        st += '<s>' + ' ' +  row[0] + ' ' + '</s>' + ' '
-
+    # Checks if tweet generated is under 140 characters and regenerates if over
     over140 = True
     while over140:
-        test_probs = bigram_probs(st)
+        test_probs = bigram_probs()
         test_sent = generate_words(test_probs)
         if len(test_sent) < 141:
             over140 = False
 
     print(test_sent)
 
-    '''
-    for f in files:
-        in_file = open(f, 'r')
-        for row in
-        in_file.close()
-
-    
-    alice = open('alicecorpus.txt', 'r')
-    alice_probs =  bigram_probs(alice.read())
-    alice_sent = generate_words(alice_probs)
-
-    print('Problem 5b:')
-    print(alice_sent)
-    print()
-    '''
 main()
 
