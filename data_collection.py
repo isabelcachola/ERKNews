@@ -1,15 +1,14 @@
 #####################################
 '''
-This code takes twitter handles and dates as input and outputs a text file
-(output.txt) which must then be converted to csv using data2spreadsheet.py
+This code parses through a list of handles, streams their timeline for the past
+4 days, then writes to an output file (output.txt) which generate_tweet.py then
+takes as input to generate sentences.
 Retweets and links are excluded.
 '''
 #####################################
 
 from TwitterSearch import *
 from auth import TwitterAuth
-import json
-import csv
 
 class PastDate(Exception):
     pass
@@ -20,9 +19,11 @@ def main():
     handles = ['@BBCWorld', '@cnnbrk', '@reuters', '@AP']
 
     output = open('output.txt', 'w')
+
+    # Creates list of dates to collect
     dates = []
-    for i in range(3):
-        date_collect_orig = datetime.now() - timedelta(days=(i+1))
+    for i in range(4):
+        date_collect_orig = datetime.now() - timedelta(days=(i))
         date_collect_orig = date_collect_orig.strftime("%m %d %Y")
         date_collect = date_collect_orig.split()
         date_collect = list(map(int, date_collect))
@@ -31,8 +32,12 @@ def main():
 
     # Hard code months
     months = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
+
+    # For each of the past 4 days
     for date_collect in dates:
+        # For all the handles you want to collect
         for handle in handles:
+
             try:
                 # Create a Twitter search object
                 ts = TwitterSearch(
@@ -44,6 +49,9 @@ def main():
 
                 tuo = TwitterUserOrder(handle) # Twitter User Order
 
+
+                # Parses through timeline and collects tweets until it is past
+                # the date of collection
                 for tweet in ts.search_tweets_iterable(tuo):
                     text = tweet['text']
                     date = tweet['created_at']
@@ -62,7 +70,6 @@ def main():
                             tweet['text'] = tweet['text'][:idx]
                         if '\n' in tweet['text']:
                             tweet['text'] = tweet['text'].replace('\n','')
-                        #output += tweet['text'] + '\n'
                         output.write(tweet['text'] + '\n')
                         print('@%s tweeted: %s' %(tweet['user']['screen_name'], tweet['text']))
 
@@ -80,7 +87,6 @@ def main():
 
             except PastDate:
                 print()
-                #print('Collection complete for %s.' %(date_collect_orig))
 
             except KeyboardInterrupt:
                 print()
@@ -89,5 +95,4 @@ def main():
     output.close()
     print('Collection complete for %s.' %(date_collect_orig))
 
-    #d2s.convert(output)
 main()
