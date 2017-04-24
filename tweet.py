@@ -16,7 +16,9 @@ def main():
 
     headline = generate_tweet.generate()
 
-    api.update_status(status=headline)
-    print(headline)
+    print('Headline:', headline)
+    tweet = input('Do you want to post this headline? (y|n) ')
+    if tweet == 'y':
+        api.update_status(status=headline)
 
 main()

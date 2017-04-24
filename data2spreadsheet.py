@@ -25,7 +25,7 @@ def write_file(in_file, name):
 
     out_file.close()
 
-def main():
+def convert():
     # Find handle of data
     handle = f.readline()
     handle = handle.strip()
@@ -44,6 +44,5 @@ def main():
     write_file(f, name)
     print('Complete.')
 
-main()
-
-f.close()
+    f.close()
+convert()
