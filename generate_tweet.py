@@ -7,6 +7,7 @@ generate() is called in tweet.py and returns a generated tweet
 ##############################################
 
 import nltk
+import data_collection
 
 # Returns list of words as a corpus
 def create_corpus():
@@ -47,6 +48,6 @@ def generate():
         if len(sent) < 141:
             over140 = False
         else:
-            sent = generate_sent(files, text, prob_dist)
+            sent = generate_sent(text, prob_dist)
     return sent[4:len(sent)-5]
 

@@ -15,10 +15,17 @@ class PastDate(Exception):
 
 def main():
     from datetime import datetime, timedelta
+    import time
+    import progressbar
 
     handles = ['@BBCWorld', '@cnnbrk', '@reuters', '@AP']
 
     output = open('output.txt', 'w')
+
+    print('Starting data collection. Please hold...')
+
+    count = 0
+    bar = progressbar.ProgressBar(max_value=4)
 
     # Creates list of dates to collect
     dates = []
@@ -33,6 +40,7 @@ def main():
     # Hard code months
     months = {'Jan': 1, 'Feb': 2, 'Mar': 3, 'Apr': 4, 'May': 5, 'Jun': 6, 'Jul': 7, 'Aug': 8, 'Sep': 9, 'Oct': 10, 'Nov': 11, 'Dec': 12}
 
+    days_collected = 0
     # For each of the past 4 days
     for date_collect in dates:
         # For all the handles you want to collect
@@ -71,7 +79,8 @@ def main():
                         if '\n' in tweet['text']:
                             tweet['text'] = tweet['text'].replace('\n','')
                         output.write(tweet['text'] + '\n')
-                        print('@%s tweeted: %s' %(tweet['user']['screen_name'], tweet['text']))
+                        count += 1
+                        #print('@%s tweeted: %s' %(tweet['user']['screen_name'], tweet['text']))
 
                     # If month to be collected is before month of tweet
                     # Or if month is the same but it's an earlier day
@@ -86,13 +95,21 @@ def main():
                 print(e)
 
             except PastDate:
-                print()
+                pass
+                #print()
 
             except KeyboardInterrupt:
                 print()
                 print('Keyboard Interrupt. Collection stopped.')
+        days_collected += 1 
+        bar.update(days_collected)
 
+    bar.finish()
     output.close()
-    print('Collection complete for %s.' %(date_collect_orig))
+    print()
+    print()
+    print('Collection complete.')
+    print('Number of tweets collected:', count)
+    print()
 
 main()
