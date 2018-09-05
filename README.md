@@ -23,9 +23,7 @@ To change input data, change list of handles in data_collection.py
 Need to install libraries TwitterSearch, Tweepy, and NLTK
 
 If you have pip install:
-$ pip install TwitterSearch
-$ pip install Tweepy
-$ pip install -U nltk
+$ pip install -r requirements.txt
 
 To test installation:
 $ python3
